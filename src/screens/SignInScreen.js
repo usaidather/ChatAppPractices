@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, SafeAreaView, Image } from 'react-native'
+import { StyleSheet, View, Text, SafeAreaView, Image, KeyboardAvoidingView } from 'react-native'
 import Button from '../components/Button'
 import EmailField from '../components/EmailTextField'
 import PasswordField from '../components/PasswordTextField'
@@ -7,41 +7,75 @@ import Color from '../utils/colors'
 import Strings from '../const/String'
 import Images from '../const/Images'
 import Constants from '../const/Constants'
+import DismissKeyboard from '../components/DismissKeybaord'
+import Utility from '../utils/Utility'
+
 
 function SignInScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-   navigationOptions = ({ navigation }) => {
-    return {
-       header: () => null
-    } 
-}
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
   performSignIn = () => {
-    console.log(email)
+    const isValidEmail = validateEmailAddress()
+    const isValidPassword = validatePasswordFeild()
+    
+    if (isValidEmail && isValidPassword) {
+      setEmailError('')
+      setPasswordError('')
+
+      console.log('Logged In')
+
+    } else {
+      console.log('Not logged in')
+
+    }
+
+  }
+  validateEmailAddress = () => {
+    const isValidEmail = Utility.isEmailValid(email)
+    isValidEmail ? setEmailError('') : setEmailError(Strings.InvalidEmailAdress)
+    return isValidEmail
   }
 
+  validatePasswordFeild = () => {
+    const isValidField = Utility.isValidField(password)
+    isValidField ? setPasswordError('') : setPasswordError(Strings.PasswordFieldEmpty)
+    return isValidField
+  }
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
+    <DismissKeyboard>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <View>
+          <SafeAreaView>
 
-        <Image style = {styles.logo} source={Images.logo}/>
+            <Image style={styles.logo} source={Images.logo} />
 
-        <EmailField
-          term={email}
-          placeHolder="Email Address"
-          onTermChange={newEmail => setEmail(newEmail)} />
+            <EmailField
+              term={email}
+              error={emailError}
+              placeHolder={Strings.EmailPlaceHolder}
+              onTermChange={newEmail => setEmail(newEmail)}
+              onValidateEmailAddress={validateEmailAddress}
+            />
 
-        <PasswordField
-          term={password}
-          placeHolder="Password"
-          onTermChange={newPassword => setPassword(newPassword)} />
+            <PasswordField
+              term={password}
+              error = {passwordError}
+              placeHolder={Strings.PasswordPlaceHolder}
+              onTermChange={newPassword => setPassword(newPassword)}
+              onValidatePasswordField = {validatePasswordFeild}
+            />
 
-        <Button title={Strings.Join} onPress={performSignIn} />
-      </SafeAreaView>
+            <Button title={Strings.Join} onPress={performSignIn} />
 
-    </View>
+          </SafeAreaView>
+
+        </View>
+      </KeyboardAvoidingView>
+    </DismissKeyboard>
   )
 }
 

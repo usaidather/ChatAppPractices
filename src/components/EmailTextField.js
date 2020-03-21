@@ -1,17 +1,10 @@
-import React , { useState } from 'react'
+import React from 'react'
 import { TextInput, Text, StyleSheet, View } from 'react-native'
-import Utility from '../utils/Utility'
 import Color from '../utils/colors'
 import Constants from '../const/Constants'
 
 
-const EmailTextField = ({ term, placeHolder, onTermChange, onTermSubmit }) => {
-
-const [error, setError] = useState('')
-
-    function validateEmailAddress(){
-        Utility.isEmailValid(term) ? setError('') : setError('Invalid Email Address')
-    }
+const EmailTextField = ({ term, placeHolder, onTermChange, onValidateEmailAddress, error }) => {
 
     return (
         <View>
@@ -23,7 +16,7 @@ const [error, setError] = useState('')
                     placeholder={placeHolder}
                     value={term}
                     onChangeText={onTermChange}
-                    onEndEditing={validateEmailAddress} />
+                    onEndEditing={onValidateEmailAddress} />
             </View>
         </View>
     )
@@ -35,7 +28,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         flex: 1,
         marginHorizontal: 20,
-        
+
     },
     TextFieldView: {
         height: Constants.screenHeight * 0.06,

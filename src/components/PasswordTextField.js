@@ -2,15 +2,10 @@ import React, { useState } from 'react'
 import { TextInput, Text, StyleSheet, View } from 'react-native'
 import Utility from '../utils/Utility';
 import Color from '../utils/colors'
-
 import Constants from '../const/Constants'
+import Strings from '../const/String'
 
-const PasswordTextField = ({ term, placeHolder, onTermChange, onTermSubmit }) => {
-    const [error, setError] = useState('')
-
-  function isEmptyField() {
-    Utility.isValidField(term) ? setError('') : setError('Password field can not be empty')
-    }
+const PasswordTextField = ({ term, placeHolder, onTermChange, onValidatePasswordField, error }) => {
 
     return (
         <View>
@@ -23,7 +18,7 @@ const PasswordTextField = ({ term, placeHolder, onTermChange, onTermSubmit }) =>
                     placeholder={placeHolder}
                     value={term}
                     onChangeText={onTermChange}
-                    onEndEditing={isEmptyField} />
+                    onEndEditing={onValidatePasswordField} />
             </View>
         </View>
     )
