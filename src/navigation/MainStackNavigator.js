@@ -8,15 +8,23 @@ import ChatScreen from '../screens/ChatScreen'
 
 const Stack = createStackNavigator()
 
+function UserStackNavigator() {
+    return (
+        <Stack.Navigator name="SignIn">
+            <Stack.Screen
+                name='SignInScreen'
+                component={SignInScreen}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    )
+}
+
 function MainStackNavigator() {
     return (
-        <NavigationContainer >
-            <Stack.Navigator>
-                <Stack.Screen
-                    name='SignInScreen'
-                    component={SignInScreen}
-                    options={{headerShown:false}}
-                />
+        <NavigationContainer>
+            <Stack.Navigator name="Chat">
+                <Stack.Screen name="User" component={UserStackNavigator} options={{ headerShown: false }} />
                 <Stack.Screen
                     name='Groups Screen'
                     component={GroupScreen}
@@ -27,7 +35,7 @@ function MainStackNavigator() {
                     options={{ title: 'Chat' }} />
             </Stack.Navigator>
         </NavigationContainer>
-        
+
     )
 }
 

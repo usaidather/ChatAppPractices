@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TextInput, Text, StyleSheet, View } from 'react-native'
 import Utility from '../utils/Utility';
 import Color from '../utils/colors'

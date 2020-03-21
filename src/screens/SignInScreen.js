@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, SafeAreaView, Image, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, View, Alert, SafeAreaView, Image, KeyboardAvoidingView } from 'react-native'
 import Button from '../components/Button'
 import EmailField from '../components/EmailTextField'
 import PasswordField from '../components/PasswordTextField'
@@ -9,30 +9,27 @@ import Images from '../const/Images'
 import Constants from '../const/Constants'
 import DismissKeyboard from '../components/DismissKeybaord'
 import Utility from '../utils/Utility'
+import firebase from '../firebase/Firebase'
 
 
-function SignInScreen() {
+function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [isLoading, setIsloading] = useState(false)
 
   performSignIn = () => {
     const isValidEmail = validateEmailAddress()
     const isValidPassword = validatePasswordFeild()
-    
+
     if (isValidEmail && isValidPassword) {
       setEmailError('')
       setPasswordError('')
-
-      console.log('Logged In')
-
-    } else {
-      console.log('Not logged in')
-
+      registration(email, password)
     }
-
   }
+
   validateEmailAddress = () => {
     const isValidEmail = Utility.isEmailValid(email)
     isValidEmail ? setEmailError('') : setEmailError(Strings.InvalidEmailAdress)
@@ -43,6 +40,42 @@ function SignInScreen() {
     const isValidField = Utility.isValidField(password)
     isValidField ? setPasswordError('') : setPasswordError(Strings.PasswordFieldEmpty)
     return isValidField
+  }
+
+  registration = (email, password) => {
+    try {
+      setIsloading(true)
+      // sign the user...
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(user => {
+          setIsloading(false)
+
+          Alert.alert('LoggedIn');
+          // resetting the stack and navigation to home screen
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Groups Screen' }],
+          });
+        })
+        .catch((error) => {
+          // if user not found create a new user...
+          firebase.auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(user => {
+              setIsloading(false)
+
+              Alert.alert('Created A New User');
+            })
+            .catch((error) => {
+              setIsloading(false)
+              console.log(error)
+              Alert.alert(error);
+            })
+        })
+    } catch (error) {
+      setIsloading(false)
+      Alert.alert(error);
+    }
   }
 
   return (
@@ -63,13 +96,13 @@ function SignInScreen() {
 
             <PasswordField
               term={password}
-              error = {passwordError}
+              error={passwordError}
               placeHolder={Strings.PasswordPlaceHolder}
               onTermChange={newPassword => setPassword(newPassword)}
-              onValidatePasswordField = {validatePasswordFeild}
+              onValidatePasswordField={validatePasswordFeild}
             />
 
-            <Button title={Strings.Join} onPress={performSignIn} />
+            <Button title={Strings.Join} onPress={performSignIn} isLoading={isLoading} />
 
           </SafeAreaView>
 

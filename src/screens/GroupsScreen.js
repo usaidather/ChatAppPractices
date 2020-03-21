@@ -1,7 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 
-function GroupsScreen() {
+function GroupsScreen({ navigation }) {
+  // navigation.reset({
+  //   index: 0,
+  // })
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Chat Screen</Text>
