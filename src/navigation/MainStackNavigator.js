@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import SignInScreen from '../screens/SignInScreen'
 import GroupScreen from '../screens/GroupsScreen'
 import ChatScreen from '../screens/ChatScreen'
+import firebase from '../firebase/Firebase'
 
 const Stack = createStackNavigator()
 
@@ -24,15 +25,23 @@ function MainStackNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator name="Chat">
-                <Stack.Screen name="User" component={UserStackNavigator} options={{ headerShown: false }} />
-                <Stack.Screen
-                    name='Groups Screen'
-                    component={GroupScreen}
-                    options={{ title: 'Groups' }} />
-                <Stack.Screen
-                    name='Chat Screen'
-                    component={ChatScreen}
-                    options={{ title: 'Chat' }} />
+
+                {firebase.auth().currentUser ? (
+                    <>
+                        <Stack.Screen name="User" component={UserStackNavigator} options={{ headerShown: false }} />
+                    </>
+                ) : (
+                        <>
+                            <Stack.Screen
+                                name='Groups Screen'
+                                component={GroupScreen}
+                                options={{ title: 'Groups' }} />
+                            <Stack.Screen
+                                name='Chat Screen'
+                                component={ChatScreen}
+                                options={{ title: 'Chat' }} />
+                        </>
+                    )}
             </Stack.Navigator>
         </NavigationContainer>
 
