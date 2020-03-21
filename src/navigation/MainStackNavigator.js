@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import SignInScreen from '../screens/SignInScreen'
-import GroupScreens from '../screens/GroupsScreen'
+import GroupScreen from '../screens/GroupsScreen'
+import ChatScreen from '../screens/ChatScreen'
 
 const Stack = createStackNavigator()
 
@@ -15,12 +16,12 @@ function MainStackNavigator() {
                     name='SignInScreen'
                     component={SignInScreen} />
                 <Stack.Screen
-                    name='GroupsScreen'
-                    component={GroupsScreen}
+                    name='Groups Screen'
+                    component={GroupScreen}
                     options={{ title: 'Groups' }} />
                 <Stack.Screen
-                    name='GroupsScreen'
-                    component={GroupsScreen}
+                    name='Chat Screen'
+                    component={ChatScreen}
                     options={{ title: 'Chat' }} />
             </Stack.Navigator>
         </NavigationContainer>

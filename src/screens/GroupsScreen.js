@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 
-function ChatScreen() {
+function GroupsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Chat Screen</Text>
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ChatScreen
+export default GroupsScreen
