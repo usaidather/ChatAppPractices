@@ -10,11 +10,13 @@ const Stack = createStackNavigator()
 
 function MainStackNavigator() {
     return (
-        <NavigationContainer>
+        <NavigationContainer >
             <Stack.Navigator>
                 <Stack.Screen
                     name='SignInScreen'
-                    component={SignInScreen} />
+                    component={SignInScreen}
+                    options={{headerShown:false}}
+                />
                 <Stack.Screen
                     name='Groups Screen'
                     component={GroupScreen}
@@ -25,6 +27,7 @@ function MainStackNavigator() {
                     options={{ title: 'Chat' }} />
             </Stack.Navigator>
         </NavigationContainer>
+        
     )
 }
 

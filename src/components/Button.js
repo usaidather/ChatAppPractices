@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         justifyContent: 'center',
         alignItems: 'center',
+        margin: 20,
 
         backgroundColor: Color.uastudiosGreen,
         shadowColor: Color.uastudiosGreen,
