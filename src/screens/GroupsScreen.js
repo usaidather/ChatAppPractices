@@ -1,52 +1,14 @@
-import React, { useLayoutEffect } from 'react'
-import { StyleSheet, View, Text, Alert } from 'react-native'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Alert } from 'react-native'
 import ButtonWithIcon from '../components/ButtonWithBackground'
 import images from '../const/Images'
-import Strings from '../const/String'
-import firebase from '../firebase/Firebase'
+import GroupItems from '../components/GroupsItem'
+import firebase, { firestore } from '../firebase/Firebase'
+import Color from '../utils/colors'
 
 
 function GroupsScreen({ navigation }) {
-
-  function showAddNewGroupAlert() {
-    Alert.prompt(
-      Strings.CreateGroup,
-      Strings.EnterYourGroupname,
-      [
-        {
-          text: Strings.Cancel,
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        {
-          text: Strings.Ok,
-          onPress: groupName => console.log("OK Pressed, password: " + groupName)
-        }
-      ],
-    );
-  }
-
-  logout = async () => {
-    try {
-        await firebase.auth().signOut();
-    } catch (e) {
-        console.log(e);
-    }
-}
-
-  // function logout() {
-  //   firebase.auth().signOut().then(user => {
-  //     console.log(user)
-  //     // navigation.reset({
-  //     //   index: 0,
-  //     //   routes: [{ name: 'User' }],
-  //     // })
-
-  //   }).catch(error => {
-  //     Alert.alert('Failed to logout !');
-
-  //   })
-  // }
+  const [groups, setGroups] = useState([]);
 
   useLayoutEffect(() => {
 
@@ -54,7 +16,7 @@ function GroupsScreen({ navigation }) {
       headerRight: () => (
         <ButtonWithIcon
           onPress={() => {
-            showAddNewGroupAlert()
+            navigation.navigate('Add Group Screen')
           }}
           image={images.add}
         />
@@ -62,7 +24,7 @@ function GroupsScreen({ navigation }) {
       headerLeft: () => (
         <ButtonWithIcon
           onPress={() => {
-            logout()
+            firebase.auth().signOut()
           }}
           image={images.logout}
         />
@@ -70,9 +32,56 @@ function GroupsScreen({ navigation }) {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    getChats()
+  }, [])
+
+  function getChats() {
+    const db = firestore
+    var groupArray = [];
+
+    db.collection("groups")
+      .onSnapshot(function (snapshot) {
+        snapshot.docChanges().forEach(function (change) {
+          if (change.type === "added") {
+            console.log("New Group: ", change.doc.data());
+            groupArray.push(change.doc.data());
+
+          }
+          if (change.type === "modified") {
+            console.log("Modified Group: ", change.doc.data());
+          }
+          if (change.type === "removed") {
+            console.log("Removed Group: ", change.doc.data());
+          }
+
+          setGroups(groupArray)
+
+        });
+      });
+
+  }
+
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Chat Screen</Text>
+      <FlatList
+
+        data={groups}
+        keyExtractor={(item, index) => 'key' + index}
+        renderItem={({ item }) => {
+
+          return (
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('Chat Screen')
+
+            }}>
+              <GroupItems item={item} />
+            </TouchableOpacity>
+          )
+        }}
+      />
     </View>
   )
 }
@@ -82,12 +91,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ebebeb'
+    backgroundColor: Color.white
   },
-  text: {
-    color: '#101010',
-    fontSize: 24,
-    fontWeight: 'bold'
+  flatList: {
+    margin: 10
   }
 })
 

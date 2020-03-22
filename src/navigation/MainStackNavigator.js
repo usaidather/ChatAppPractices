@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import SignInScreen from '../screens/SignInScreen'
 import GroupScreen from '../screens/GroupsScreen'
 import ChatScreen from '../screens/ChatScreen'
+import AddGroupScreen from '../screens/AddGroupsScreen'
 import firebase from '../firebase/Firebase'
 import Color from '../utils/colors'
 
@@ -47,6 +48,10 @@ function MainStackNavigator() {
                                 name='Groups Screen'
                                 component={GroupScreen}
                                 options={{ title: 'Groups' }} />
+                            <Stack.Screen
+                                name='Add Group Screen'
+                                component={AddGroupScreen}
+                                options={{ title: 'Chat' }} />
                             <Stack.Screen
                                 name='Chat Screen'
                                 component={ChatScreen}
