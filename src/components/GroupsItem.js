@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        height: 90,
+        height: 50,
         width: Constants.screenWidth,
         margin: 10
 
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
     },
 
     Image: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         shadowColor: Color.gray,
         shadowOpacity: 0.4,
         shadowOffset: { height: 1, width: 1 },
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 
     groupTitle: {
         color: Color.gray,
-        fontSize: 24,
+        fontSize: 14,
         fontWeight: 'bold',
         marginHorizontal: 10
 

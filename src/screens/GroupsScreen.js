@@ -62,8 +62,6 @@ function GroupsScreen({ navigation }) {
 
   }
 
-
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -74,8 +72,9 @@ function GroupsScreen({ navigation }) {
 
           return (
             <TouchableOpacity onPress={() => {
-              navigation.navigate('Chat Screen')
-
+              navigation.navigate('Chat Screen', {
+                item
+              })
             }}>
               <GroupItems item={item} />
             </TouchableOpacity>

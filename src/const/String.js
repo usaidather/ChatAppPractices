@@ -8,6 +8,8 @@ const String = {
     PasswordPlaceHolder: 'Password',
     CreateGroup: 'Create Group',
     EnterYourGroupname: 'Please enter group name',
+    TypeYourMessage: 'Type your message here...',
+
     Ok: 'Ok',
     Cancel: 'Cancel',
 
