@@ -6,6 +6,7 @@ import SignInScreen from '../screens/SignInScreen'
 import GroupScreen from '../screens/GroupsScreen'
 import ChatScreen from '../screens/ChatScreen'
 import firebase from '../firebase/Firebase'
+import Color from '../utils/colors'
 
 const Stack = createStackNavigator()
 
@@ -24,7 +25,17 @@ function UserStackNavigator() {
 function MainStackNavigator() {
     return (
         <NavigationContainer>
-            <Stack.Navigator name="Chat">
+            <Stack.Navigator name="Chat"
+                screenOptions={{
+                    headerStyle: {
+                        backgroundColor: Color.uastudiosGreen,
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
+                }}
+            >
 
                 {firebase.auth().currentUser ? (
                     <>
