@@ -4,9 +4,10 @@ import Color from '../utils/colors'
 import Constants from '../const/Constants'
 import ButtonWithBackgroud from '../components/ButtonWithBackground'
 
-const MessageFieldView = ({ term, placeHolder, onTermChange, onValidateTextField, error, onSubmit }) => {
+const MessageFieldView = ({ term, placeHolder, onTermChange, onValidateTextField, error, onSubmit, isJoined }) => {
 
     return (
+        
         <View style={styles.containerView}>
             <View style={styles.FieldView}>
                 <TextInput
@@ -16,6 +17,7 @@ const MessageFieldView = ({ term, placeHolder, onTermChange, onValidateTextField
                     value={term}
                     onChangeText={onTermChange}
                     onEndEditing={onValidateTextField} />
+                
                 <Button title="Send" color = {Color.white} onPress={onSubmit} />
             </View>
         </View>

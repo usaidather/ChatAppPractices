@@ -5,6 +5,7 @@ import images from '../const/Images'
 import GroupItems from '../components/GroupsItem'
 import firebase, { firestore } from '../firebase/Firebase'
 import Color from '../utils/colors'
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 function GroupsScreen({ navigation }) {
@@ -40,14 +41,24 @@ function GroupsScreen({ navigation }) {
   signOutUser = async () => {
     try {
         await firebase.auth().signOut();
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Chat Screen' }],
-        });
+        storeData()
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{ name: 'Chat Screen' }],
+        // });
     } catch (e) {
         console.log(e);
     }
 }
+
+storeData = async () => {
+  try {
+    await AsyncStorage.setItem('isLoggedIn', 'false')
+  } catch (e) {
+    // saving error
+  }
+}
+
 
   function getChats() {
     const db = firestore

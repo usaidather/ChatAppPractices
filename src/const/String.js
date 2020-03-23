@@ -9,6 +9,9 @@ const String = {
     CreateGroup: 'Create Group',
     EnterYourGroupname: 'Please enter group name',
     TypeYourMessage: 'Type your message here...',
+    JoinChat: 'Join Chat',
+    JoinChatConfirmMessage: 'Do you want to join this chat?',
+    joinMessage: 'You have joined the group successfully !',
 
     Ok: 'Ok',
     Cancel: 'Cancel',

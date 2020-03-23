@@ -12,30 +12,111 @@ import MessageItem from '../components/MessageItem'
 function ChatScreen({ route, navigation }) {
   const [messageList, setMessageList] = useState([]);
   const [message, setMessage] = useState('')
+  const [isJoined, setIsJoined] = useState(false)
 
   const { item } = route.params;
   const userID = firebase.auth().currentUser.uid;
 
-  useLayoutEffect(() => {
-    if (userID != item.userID) {
-      navigation.setOptions({
-        headerRight: () => (
-          <Button
-            onPress={() => {
-            }}
-            title={Strings.Join}
-            color={Color.white}
-          />
-        )
-      });
-    }
-  }, [navigation]);
+  // useLayoutEffect(() => {
+
+  //   var uID = userID.toString()
+  //   var chatCreatorID = item.userID.toString()
+  //   console.log('userID:', uID)
+  //   console.log('chatCreatorID:', chatCreatorID)
+  //   if (uID != chatCreatorID) {
+  //     console.log('why the hell')
+  //     navigation.setOptions({
+  //       headerRight: () => (
+  //         <View>
+
+  //           {(isJoined) ? (
+  //             <Button
+  //               onPress={() => {
+  //                 joinGroup()
+  //               }}
+  //               title={Strings.Join}
+  //             />
+  //           ) : null}
+  //         </View>
+
+  //       )
+  //     });
+
+  //   }
+  // }, [navigation]);
 
   useEffect(() => {
     console.log(item)
-
+    getUserJoinedAlreadyOrNot()
     getMessages()
   }, [])
+
+
+  function getUserJoinedAlreadyOrNot() {
+
+    firestore.collection("members").doc(item.groupID).collection('member').where("userID", "==", userID)
+      .get()
+      .then(function (querySnapshot) {
+        console.log(querySnapshot.size)
+        if (querySnapshot.size > 0) {
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            if (doc.data() != null) {
+              setIsJoined(true)
+            } else {
+              Alert.alert('data')
+              setIsJoined(false)
+              showAlertToJoinGroup()
+
+            }
+          }
+          );
+        } else {
+          showAlertToJoinGroup()
+
+        }
+      })
+
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  }
+
+  function showAlertToJoinGroup() {
+    Alert.alert(
+      Strings.JoinChat,
+      Strings.JoinChatConfirmMessage,
+      [
+        {
+          text: 'Yes', onPress: () => {
+            joinGroup()
+          }
+        },
+        { text: 'No', onPress: () => console.log('No Pressed') },
+      ],
+      { cancelable: false }
+    )
+  }
+
+  function joinGroup() {
+    // setIsloading(true)
+    const groupMemberRef = firestore.collection("members").doc(item.groupID).collection('member').doc()
+
+    groupMemberRef.set({
+      userID: userID,
+
+    }).then(function (docRef) {
+      Alert.alert(Strings.joinMessage)
+      console.log("Document written with ID: ", groupMemberRef.id);
+      setMessage('')
+    })
+      .catch(function (error) {
+        Alert.alert(groupMemberRef.id)
+        setIsloading(false)
+        console.error("Error adding document: ", error);
+      });
+  }
 
   function getMessages() {
     const db = firestore

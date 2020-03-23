@@ -12,16 +12,17 @@ function MessageItem({ item }) {
     function messageView() {
         if (userID === item.senderID) {
             return (
-                <View style={styles.myMessageContainerView}>
-                    <Text style={styles.senderName}>{item.senderEmail}</Text>
-                    <Text style={styles.message} >{item.message}</Text>
-                </View>
-            )
-        } else {
-            return (
                 <View style={styles.othersMessageContainerView}>
                     <Text style={[styles.senderName, { textAlign: 'right' }]}>{item.senderEmail}</Text>
                     <Text style={[styles.message, { textAlign: 'right' }]} >{item.message}</Text>
+                </View>
+            )
+
+        } else {
+            return (
+                <View style={styles.myMessageContainerView}>
+                    <Text style={styles.senderName}>{item.senderEmail}</Text>
+                    <Text style={styles.message} >{item.message}</Text>
                 </View>
             )
         }
@@ -41,6 +42,8 @@ const styles = StyleSheet.create({
         backgroundColor: Color.gray,
         borderRadius: 5,
         marginLeft: 25,
+        marginTop:5,
+        marginBottom:5,
         padding: 10
     },
     myMessageContainerView: {

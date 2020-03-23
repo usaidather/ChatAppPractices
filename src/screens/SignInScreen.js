@@ -10,6 +10,7 @@ import Constants from '../const/Constants'
 import DismissKeyboard from '../components/DismissKeybaord'
 import Utility from '../utils/Utility'
 import firebase from '../firebase/Firebase'
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 function SignInScreen({ navigation }) {
@@ -49,7 +50,7 @@ function SignInScreen({ navigation }) {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(user => {
           setIsloading(false)
-
+          storeData()
           Alert.alert('LoggedIn');
           // resetting the stack and navigation to home screen
           navigation.reset({
@@ -63,7 +64,11 @@ function SignInScreen({ navigation }) {
             .createUserWithEmailAndPassword(email, password)
             .then(user => {
               setIsloading(false)
-
+              storeData()
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Groups Screen' }],
+              });
               Alert.alert('Created A New User');
             })
             .catch((error) => {
@@ -75,6 +80,14 @@ function SignInScreen({ navigation }) {
     } catch (error) {
       setIsloading(false)
       Alert.alert(error);
+    }
+  }
+
+  storeData = async () => {
+    try {
+      await AsyncStorage.setItem('isLoggedIn', 'true')
+    } catch (e) {
+      // saving error
     }
   }
 

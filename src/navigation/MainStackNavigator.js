@@ -7,7 +7,7 @@ import GroupScreen from '../screens/GroupsScreen'
 import ChatScreen from '../screens/ChatScreen'
 import AddGroupScreen from '../screens/AddGroupsScreen'
 import firebase from '../firebase/Firebase'
-import Color from '../utils/colors'
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator()
 
@@ -76,15 +76,41 @@ function SignInFlow() {
     )
 }
 
+// getData = async () => {
+//     try {
+//         const value = await AsyncStorage.getItem('@isLoggedIn')
+//         if (value !== null) {
+//             return value
+//         }
+//     } catch (e) {
+//         return null
 
+//     }
+//     return value
+// }
+
+const getUserId = async () => {
+    let userId = '';
+    try {
+      userId = await AsyncStorage.getItem('isLoggedIn') ;
+    } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+    }
+    return userId;
+  }
 
 function MainStackNavigator() {
-    console.log(firebase.auth().currentUser)
+    // console.log(firebase.auth().currentUser)
     const user = firebase.auth().currentUser
-    return (
-        user ? SignInFlow() : UserFlow()
+    // const data = getData()
+    // console.log(data)
+    console.log(getUserId())
 
-        // <NavigationContainer>
+    return (
+        !getUserId()  ?  SignInFlow() : UserFlow()
+        // SignInFlow()        
+         // <NavigationContainer>
         //     <Stack.Navigator name="chat">
 
         //         <Stack.Screen
