@@ -24,7 +24,7 @@ function GroupsScreen({ navigation }) {
       headerLeft: () => (
         <ButtonWithIcon
           onPress={() => {
-            firebase.auth().signOut()
+            signOutUser()
           }}
           image={images.logout}
         />
@@ -35,6 +35,19 @@ function GroupsScreen({ navigation }) {
   useEffect(() => {
     getChats()
   }, [])
+
+
+  signOutUser = async () => {
+    try {
+        await firebase.auth().signOut();
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Chat Screen' }],
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
 
   function getChats() {
     const db = firestore

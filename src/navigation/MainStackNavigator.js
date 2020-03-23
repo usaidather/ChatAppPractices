@@ -23,43 +23,131 @@ function UserStackNavigator() {
     )
 }
 
-function MainStackNavigator() {
+function UserFlow() {
+    console.log(firebase.auth().currentUser)
+    const user = firebase.auth().currentUser
     return (
         <NavigationContainer>
-            <Stack.Navigator name="Chat"
-                screenOptions={{
-                    headerStyle: {
-                        backgroundColor: Color.uastudiosGreen,
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
-            >
+            <Stack.Navigator name="chat">
 
-                {firebase.auth().currentUser ? (
-                    <>
-                        <Stack.Screen name="User" component={UserStackNavigator} options={{ headerShown: false }} />
-                    </>
-                ) : (
-                        <>
-                            <Stack.Screen
-                                name='Groups Screen'
-                                component={GroupScreen}
-                                options={{ title: 'Groups' }} />
-                            <Stack.Screen
-                                name='Add Group Screen'
-                                component={AddGroupScreen}
-                                options={{ title: 'Chat' }} />
-                            <Stack.Screen
-                                name='Chat Screen'
-                                component={ChatScreen}
-                                options={{ title: 'Chat' }} />
-                        </>
-                    )}
+                <Stack.Screen
+                    name='SignInScreen'
+                    component={SignInScreen}
+                    options={{ headerShown: false }}
+                />
+
+                <Stack.Screen
+                    name='Groups Screen'
+                    component={GroupScreen}
+                    options={{ title: 'Groups' }} />
+                <Stack.Screen
+                    name='Add Group Screen'
+                    component={AddGroupScreen}
+                    options={{ title: 'Chat' }} />
+                <Stack.Screen
+                    name='Chat Screen'
+                    component={ChatScreen}
+                    options={{ title: 'Chat' }} />
             </Stack.Navigator>
         </NavigationContainer>
+    )
+}
+
+function SignInFlow() {
+    console.log(firebase.auth().currentUser)
+    const user = firebase.auth().currentUser
+    return (
+        <NavigationContainer>
+            <Stack.Navigator name="chat">
+                <Stack.Screen
+                    name='Groups Screen'
+                    component={GroupScreen}
+                    options={{ title: 'Groups' }} />
+                <Stack.Screen
+                    name='Add Group Screen'
+                    component={AddGroupScreen}
+                    options={{ title: 'Chat' }} />
+                <Stack.Screen
+                    name='Chat Screen'
+                    component={ChatScreen}
+                    options={{ title: 'Chat' }} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
+}
+
+
+
+function MainStackNavigator() {
+    console.log(firebase.auth().currentUser)
+    const user = firebase.auth().currentUser
+    return (
+        user ? SignInFlow() : UserFlow()
+
+        // <NavigationContainer>
+        //     <Stack.Navigator name="chat">
+
+        //         <Stack.Screen
+        //             name='SignInScreen'
+        //             component={SignInScreen}
+        //             options={{ headerShown: false }}
+        //         />
+
+        //         <Stack.Screen
+        //             name='Groups Screen'
+        //             component={GroupScreen}
+        //             options={{ title: 'Groups' }} />
+        //         <Stack.Screen
+        //             name='Add Group Screen'
+        //             component={AddGroupScreen}
+        //             options={{ title: 'Chat' }} />
+        //         <Stack.Screen
+        //             name='Chat Screen'
+        //             component={ChatScreen}
+        //             options={{ title: 'Chat' }} />
+        //     </Stack.Navigator>
+        // </NavigationContainer>
+
+        // <NavigationContainer>
+        //     <Stack.Navigator name="Chat"
+        //         screenOptions={{
+        //             headerStyle: {
+        //                 backgroundColor: Color.uastudiosGreen,
+        //             },
+        //             headerTintColor: '#fff',
+        //             headerTitleStyle: {
+        //                 fontWeight: 'bold',
+        //             },
+        //         }}
+        //     >
+
+        //         {/* {firebase.auth().currentUser == null ? ( */}
+        //             <>
+        //                 <Stack.Screen
+        //                     name='SignInScreen'
+        //                     component={SignInScreen}
+        //                     options={{ headerShown: false }}
+        //                 />
+        //                 {/* <Stack.Screen name="User" component={UserStackNavigator} options={{ headerShown: false }} /> */}
+        //             </>
+        //         {/* ) : ( */}
+        //                 <>
+        //                     <Stack.Screen
+        //                         name='Groups Screen'
+        //                         component={GroupScreen}
+        //                         options={{ title: 'Groups' }} />
+        //                     <Stack.Screen
+        //                         name='Add Group Screen'
+        //                         component={AddGroupScreen}
+        //                         options={{ title: 'Chat' }} />
+        //                     <Stack.Screen
+        //                         name='Chat Screen'
+        //                         component={ChatScreen}
+        //                         options={{ title: 'Chat' }} />
+        //                 </>
+        //             {/* )} */}
+        //     </Stack.Navigator>
+        // </NavigationContainer>
 
     )
 }
